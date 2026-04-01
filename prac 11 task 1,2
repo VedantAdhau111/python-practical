@@ -1,0 +1,72 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('sales_data.csv')
+
+# a) Total profit of all months - Line Plot
+plt.plot(df['month_number'], df['total_profit'], marker='o')
+plt.title('Total Profit per Month')
+plt.xlabel('Month Number')
+plt.ylabel('Profit')
+plt.show()
+
+# b) All product sales - Multiline Plot
+products = ['facecream', 'facewash', 'toothpaste', 'bathingsoap', 'shampoo', 'moisturizer']
+for product in products:
+    plt.plot(df['month_number'], df[product], label=product)
+plt.legend()
+plt.title('Product Sales Data')
+plt.show()
+
+# c) Face Cream vs Face Wash - Bar Chart
+plt.bar(df['month_number'] - 0.2, df['facecream'], width=0.4, label='Face Cream')
+plt.bar(df['month_number'] + 0.2, df['facewash'], width=0.4, label='Face Wash')
+plt.legend()
+plt.title('Facial Product Sales')
+plt.show()
+
+# d) Total sale for last year - Pie Chart
+total_sales = [df[p].sum() for p in products]
+plt.pie(total_sales, labels=products, autopct='%1.1f%%')
+plt.title('Yearly Sales Distribution by Product')
+plt.show()
+
+#task 2
+# 1. Creating the dataset
+data = {
+    'Company': ['Microsoft', 'Google', 'Amazon', 'IBM', 'Deloitte', 'Capgemini', 'ATOS Origin', 'Amdocs'],
+    'New_Recruitments': [2500, 3100, 2800, 1500, 1900, 2200, 1200, 1100]
+}
+df = pd.DataFrame(data)
+
+# a) Bar Chart
+plt.figure(figsize=(10, 5))
+plt.bar(df['Company'], df['New_Recruitments'], color='skyblue')
+plt.title('New Recruitments by Company')
+plt.xticks(rotation=45)
+plt.ylabel('Number of Employees')
+plt.show()
+
+# b & c) Customized Pie Chart
+# Adding 'explode' to highlight the top recruiter (Google)
+explode = [0, 0.1, 0, 0, 0, 0, 0, 0] 
+plt.figure(figsize=(8, 8))
+plt.pie(df['New_Recruitments'], labels=df['Company'], autopct='%1.1f%%', explode=explode, shadow=True)
+plt.title('Recruitment Distribution (Customized)')
+plt.show()
+
+# d) Doughnut Chart
+plt.figure(figsize=(8, 8))
+plt.pie(df['New_Recruitments'], labels=df['Company'], autopct='%1.1f%%', pctdistance=0.85)
+# Draw a white circle at the center to make it look like a doughnut
+center_circle = plt.Circle((0, 0), 0.70, fc='white')
+fig = plt.gcf()
+fig.gca().add_artist(center_circle)
+plt.title('Recruitment Doughnut Chart')
+plt.show()
+
+# Compare IBM & Amdocs
+compare_df = df[df['Company'].isin(['IBM', 'Amdocs'])]
+plt.bar(compare_df['Company'], compare_df['New_Recruitments'], color=['blue', 'orange'])
+plt.title('Comparison: IBM vs Amdocs')
+plt.show()
